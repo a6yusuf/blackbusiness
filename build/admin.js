@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/frontend.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/admin.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2456,10 +2456,36 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ "./src/frontend.js":
-/*!*************************!*\
-  !*** ./src/frontend.js ***!
-  \*************************/
+/***/ "./src/App.js":
+/*!********************!*\
+  !*** ./src/App.js ***!
+  \********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _pages_Settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/Settings */ "./src/pages/Settings.js");
+
+
+
+
+function App() {
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_pages_Settings__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (App);
+
+/***/ }),
+
+/***/ "./src/admin.js":
+/*!**********************!*\
+  !*** ./src/admin.js ***!
+  \**********************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2471,67 +2497,317 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _frontend_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./frontend.scss */ "./src/frontend.scss");
+/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./App */ "./src/App.js");
 
 
 
 
+document.addEventListener('DOMContentLoaded', function () {
+  var element = document.getElementById('wprk-admin-app');
 
-const divsToUpdate = document.querySelectorAll(".boilerplate-update-me");
-divsToUpdate.forEach(div => {
-  const data = JSON.parse(div.querySelector("pre").innerText);
-  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(OurComponent, data), div);
-  div.classList.remove("boilerplate-update-me");
+  if (typeof element !== 'undefined' && element !== null) {
+    react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_App__WEBPACK_IMPORTED_MODULE_3__["default"], null), document.getElementById('wprk-admin-app'));
+  }
 });
-
-function OurComponent(props) {
-  const [data, setData] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({
-    parentName: '',
-    amount: 0,
-    parentPhone: '',
-    ward: []
-  });
-  const [page, setPage] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('start');
-  const [sessionId, setSessionId] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('');
-  const [orderId, setOrderId] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('');
-  const [successIndicator, setSuccessIndicator] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('');
-  const [resultIndicator, setResultIndicator] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('');
-  const [loading, setLoading] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false);
-  const style = {
-    btn: {
-      backgroundColor: 'purple',
-      borderRadius: 4,
-      color: '#fff',
-      fontSize: 14,
-      height: 30,
-      padding: 5,
-      textAlign: 'center',
-      margin: 5,
-      cursor: 'pointer'
-    }
-  };
-  const url = `${appLocalizer.apiUrl}/wprk/v1/settings`;
-  console.log("URL: ", url);
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-    className: "boilerplate-frontend"
-  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", null, "Hello Front"));
-}
 
 /***/ }),
 
-/***/ "./src/frontend.scss":
-/*!***************************!*\
-  !*** ./src/frontend.scss ***!
-  \***************************/
-/*! no exports provided */
+/***/ "./src/components/Button.js":
+/*!**********************************!*\
+  !*** ./src/components/Button.js ***!
+  \**********************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Button; });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 
+
+function Button(_ref) {
+  let {
+    bgColor = "green",
+    tColor = "white",
+    callback,
+    text = "button"
+  } = _ref;
+  const styles = {
+    button: {
+      backgroundColor: bgColor,
+      color: tColor,
+      textTransform: "uppercase",
+      fontWeight: 400,
+      fontSize: 16,
+      paddingLeft: 16,
+      paddingRight: 16,
+      paddingTop: 8,
+      paddingBottom: 8,
+      borderRadius: 4,
+      marginRight: 4,
+      marginTop: 6,
+      marginBottom: 4,
+      height: 40,
+      border: 0,
+      transition: "all .15s ease",
+      cursor: 'pointer'
+    }
+  };
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("button", {
+    type: "button",
+    style: styles.button,
+    onClick: callback
+  }, text);
+}
+
+/***/ }),
+
+/***/ "./src/components/NavBar.js":
+/*!**********************************!*\
+  !*** ./src/components/NavBar.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return NavBar; });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function NavBar(_ref) {
+  let {
+    status = "active"
+  } = _ref;
+  const styles = {
+    navWrapper: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      backgroundColor: 'black'
+    },
+    navTitleWrapper: {
+      padding: '0.5rem',
+      margin: '0.5rem',
+      display: 'flex'
+    },
+    navTitle: {
+      padding: '0.5rem',
+      fontWeight: 600,
+      fontSize: '2.25rem'
+      /* 36px */
+      ,
+      // lineHeight: '2.5rem' /* 40px */,
+      color: 'white'
+    },
+    navItemsOuterWrapper: {
+      margin: '0.5rem',
+      padding: '0.5rem'
+    },
+    navItemsInnerWrapper: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      position: 'relative'
+    },
+    navItemWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0.25rem'
+    },
+    navItemText: {
+      padding: '0.5rem',
+      fontWeight: 700,
+      margin: 10,
+      color: status === 'active' ? 'green' : 'red'
+    }
+  };
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("nav", {
+    className: styles.navWrapper,
+    style: styles.navWrapper
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    style: styles.navTitleWrapper
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h1", {
+    style: styles.navTitle
+  }, "GreenBook API")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    style: styles.navItemsOuterWrapper
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    style: styles.navItemsInnerWrapper
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    style: styles.navItemWrapper
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", {
+    style: styles.navItemText
+  }, `API is currently ${status}`))))));
+}
+
+/***/ }),
+
+/***/ "./src/components/TextInput.js":
+/*!*************************************!*\
+  !*** ./src/components/TextInput.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TextInput; });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function TextInput(_ref) {
+  let {
+    label = "label",
+    name = "input",
+    type = "text",
+    callback
+  } = _ref;
+  const styles = {
+    wrapper: {
+      position: "relative",
+      width: "31%",
+      marginTop: 20
+    },
+    label: {
+      display: "block",
+      textTransform: "uppercase",
+      color: "rgba(31,41,55,1)",
+      fontSize: 12,
+      fontWeight: 700,
+      marginBottom: 8
+    },
+    input: {
+      paddingLeft: 5,
+      paddingRight: 5,
+      paddingTop: 5,
+      paddingBottom: 5,
+      color: "rgba(55, 65, 81,1)",
+      borderRadius: 4,
+      fontSize: "0.875rem",
+      borderWidth: 1,
+      borderColor: "rgba(0, 0, 0,1)",
+      width: "100%",
+      transition: "all .15s ease"
+    }
+  };
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    style: styles.wrapper
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("label", {
+    style: styles.label,
+    htmlFor: "grid-password"
+  }, label), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("input", {
+    type: type,
+    style: styles.input,
+    name: name,
+    onChange: callback
+  }));
+}
+
+/***/ }),
+
+/***/ "./src/pages/Settings.js":
+/*!*******************************!*\
+  !*** ./src/pages/Settings.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_NavBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/NavBar */ "./src/components/NavBar.js");
+/* harmony import */ var _components_TextInput__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/TextInput */ "./src/components/TextInput.js");
+/* harmony import */ var _components_Button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Button */ "./src/components/Button.js");
+
+
+
+
+
+
+
+const Settings = () => {
+  const [data, setData] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({});
+  const [status, setStatus] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('');
+  const [loading, setLoading] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false);
+  const url = `${appLocalizer.apiUrl}/wprk/v1`;
+
+  const handleData = e => {
+    setData(prev => {
+      return { ...prev,
+        [e.target.name]: e.target.value
+      };
+    });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const {
+      username,
+      password
+    } = data;
+
+    if (username && password) {
+      setLoading(true);
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(`${url}/settings`, {
+        username,
+        password
+      }, {
+        headers: {
+          'content-type': 'application/json',
+          'X-WP-NONCE': appLocalizer.nonce
+        }
+      }).then(res => {
+        console.log("Res: ", res.data);
+        setLoading(false);
+      }); // console.log("Dt: ", username, ' ', password)
+    } else {
+      alert("Please, enter valid credentials!");
+    }
+  };
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
+    axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(`${url}/ping`).then(res => {
+      console.log("Data: ", JSON.parse(res.data));
+      setStatus(JSON.parse(res.data).status);
+    });
+  }, []);
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_NavBar__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    status: status
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("form", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_TextInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    label: "username",
+    name: "username",
+    type: "text",
+    callback: handleData
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_TextInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    label: "password",
+    name: "password",
+    type: "password",
+    callback: handleData
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    text: loading ? "Please wait..." : "Login",
+    bgColor: "black",
+    tColor: "white",
+    callback: handleSubmit
+  })));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Settings);
 
 /***/ }),
 
@@ -2569,4 +2845,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=frontend.js.map
+//# sourceMappingURL=admin.js.map

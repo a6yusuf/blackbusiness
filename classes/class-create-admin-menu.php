@@ -14,8 +14,8 @@ class WPRK_Create_Admin_Page {
         $slug = 'wprk-settings';
 
         add_menu_page(
-            __( 'Black Business', 'wp-react-kickoff' ),
-            __( 'Black Business', 'wp-react-kickoff' ),
+            __( 'Greenbook API', 'wp-react-kickoff' ),
+            __( 'Greenbook API', 'wp-react-kickoff' ),
             $capability,
             $slug,
             [ $this, 'menu_page_template' ],

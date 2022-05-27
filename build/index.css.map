@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./src/index.scss"],"names":[],"mappings":"AAAA;EACE;EACA;EACA;EACA;EACA;EACA;AACF,C","file":"index.css","sourcesContent":[".makeUpYourBlockTypeName {\n  background-color: hsl(0, 0%, 0%);\n  border: 1px solid #000;\n  border-radius: 5px;\n  padding: 20px;\n  width: 100%;\n  color: white;\n}\n"],"sourceRoot":""}

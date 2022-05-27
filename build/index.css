@@ -1,8 +1,10 @@
 .makeUpYourBlockTypeName {
-  background-color: hsl(0, 0%, 0%);
+  background-color: black;
   border: 1px solid #000;
   border-radius: 5px;
   padding: 20px;
   width: 100%;
   color: white;
 }
+
+/*# sourceMappingURL=index.css.map*/

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       BlackBusiness API
+ * Plugin Name:       Greenbook API
  * Description:       Greenbook API for recommending and listing Black businesses.
  * Version:           1.0.0
  * Author:            Azeez Yusuf
@@ -33,14 +33,12 @@ class BlackBusiness {
     add_action( 'admin_enqueue_scripts', 'load_scripts' );
 
     function load_scripts() {
-        wp_enqueue_script( 'wp-react-kickoff', WPRK_URL . 'build/index.js', [ 'wp-blocks', 'wp-element' ], wp_rand(), true );
+        wp_enqueue_script( 'wp-react-kickoff', WPRK_URL . 'build/admin.js', [ 'wp-blocks', 'wp-element' ], wp_rand(), true );
         wp_localize_script( 'wp-react-kickoff', 'appLocalizer', [
             'apiUrl' => home_url( '/wp-json' ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
         ] );
-}
-
-
+    }
   }
 
   function renderCallback($attributes) {
@@ -60,7 +58,7 @@ class BlackBusiness {
   }
 
   function renderCallbackBasic($attributes) {
-    return '<div class="boilerplate-frontend">Hello, the sky is ' . $attributes['schoolFee'] . ' and the grass is ' . $attributes['merchantName'] . '.</div>';
+    return '<div class="boilerplate-frontend">Hello, the sky is ' . $attributes['username'] . ' and the grass is ' . $attributes['password'] . '.</div>';
   }
 }
 

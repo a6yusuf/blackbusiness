@@ -14,6 +14,11 @@ class WP_React_Settings_Rest_Route {
             'callback' => [ $this, 'get_settings' ],
             'permission_callback' => [ $this, 'get_settings_permission' ]
         ] );
+        register_rest_route( 'wprk/v1', '/ping', [
+            'methods' => 'GET',
+            'callback' => [ $this, 'ping_api' ],
+            'permission_callback' => [ $this, 'get_settings_permission' ]
+        ] );
         register_rest_route( 'wprk/v1', '/settings', [
             'methods' => 'POST',
             'callback' => [ $this, 'save_settings' ],
@@ -22,17 +27,14 @@ class WP_React_Settings_Rest_Route {
     }
 
     public function get_settings() {
-        // $firstname = get_option( 'wprk_settings_firstname' );
-        // $lastname  = get_option( 'wprk_settings_lastname' );
-        // $email     = get_option( 'wprk_settings_email' );
-        // $response = [
-        //     'firstname' => $firstname,
-        //     'lastname'  => $lastname,
-        //     'email'     => $email
-        // ];
+        $username = get_option( 'greenbook_settings_username' );
+        $password  = get_option( 'greenbook_settings_password' );
+        $response = [
+            'username' => $username,
+            'password'  => $password
+        ];
 
-        // return rest_ensure_response( $response );
-        return rest_ensure_response( "Hello success" );
+        return rest_ensure_response( $response );
     }
 
     public function get_settings_permission() {
@@ -40,64 +42,47 @@ class WP_React_Settings_Rest_Route {
     }
 
     public function save_settings( $req ) {
-        $id = sanitize_text_field( $req['id'] );
-        $amount  = sanitize_text_field( $req['amount'] );
-        $merchantId = sanitize_text_field( $req['merchantId'] );
-        $password = sanitize_text_field( $req['password'] );
-        $redirectUrl = sanitize_text_field( $req['redirectUrl'] );
+        $username = sanitize_text_field( $req['username'] );
+        $password  = sanitize_text_field( $req['password'] );
 
-        $post_data = '{ 
-            "apiOperation": "CREATE_CHECKOUT_SESSION", 
-            "interaction": {
-                "operation": "PURCHASE",
-                "returnUrl": "' . $redirectUrl .'",
-                "cancelUrl": "' . $redirectUrl . '",
-            },
-            "order": {
-                "currency": "USD",
-                 "id": "' . $id . '",
-                "amount": "' . $amount . '"
-              } 
-          }';
-
-        $url = "https://fbn.gateway.mastercard.com/api/rest/version/61/merchant/" . $merchantId . "/session";
-        
-        $auth = 'merchant.'. $merchantId . ':' . $password;
-        $credentials = base64_encode($auth);
-        $authorization = 'Authorization: Basic ' . $credentials;
-
-        // Prepare new cURL resource
-        $crl = curl_init($url);
-        curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($crl, CURLINFO_HEADER_OUT, true);
-        curl_setopt($crl, CURLOPT_POST, true);
-        curl_setopt($crl, CURLOPT_POSTFIELDS, $post_data);
-         
-        // Set HTTP Header for POST request 
-        curl_setopt($crl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: Basic ' . $credentials)
+        $body = array(
+            'username' => $username,
+            'password' => $password
         );
-         
-        // Submit the POST request
-        $result = curl_exec($crl);
-         
-        // handle curl error
-        if ($result === false) {
-            // throw new Exception('Curl error: ' . curl_error($crl));
-            //print_r('Curl error: ' . curl_error($crl));
-            $result_noti = 0; die();
-        } else {
-            return rest_ensure_response( $result );
-        }
-        // Close cURL session handle
-        curl_close($crl);
 
+        $args = array(
+            'body'  => $body,
+        );
+        $url = 'https://v1.greenbookapi.com/v1/oauth/token';
+        $response = wp_remote_post( $url, $args );
+        $res  = wp_remote_retrieve_body( $response );
+
+        $data = json_decode($res);
+        return $data;
+        if(!array_key_exists('detail', $data)){
+            $token = $data['access_token'];
+            $token_type = $data['token_type'];
+    
+            update_option( 'greenbook_settings_username', $username );
+            update_option( 'greenbook_settings_password', $password );
+            update_option( 'greenbook_settings_token', $token );
+            update_option( 'greenbook_settings_token_type', $token_type );
+        }
+        return rest_ensure_response( $data );
+
+    }
+
+    public function ping_api() {
+        $url = 'https://v1.greenbookapi.com/ping';
+        $response = wp_remote_get($url);
+        $body     = wp_remote_retrieve_body( $response );
+        return rest_ensure_response($body);
     }
 
     public function save_settings_permission() {
         // return current_user_can( 'publish_posts' );
         return true;
     }
+
 }
 new WP_React_Settings_Rest_Route();
