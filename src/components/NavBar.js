@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-export default function NavBar({status="active"}) {
+export default function NavBar({status="active", current, setCurr}) {
 
     const styles = {
         navWrapper: {
@@ -44,21 +44,38 @@ export default function NavBar({status="active"}) {
             padding: '0.5rem',
             fontWeight: 700,
             margin: 10,
+            color: 'white',
+            cursor: 'pointer'
+          },
+          navPingText: {
+            padding: '0.5rem',
+            fontWeight: 700,
+            margin: 10,
             color: status === 'active' ? 'green' : 'red'
           }
           
     }
 
   return (
-    <nav className={styles.navWrapper} style={styles.navWrapper}>
+    <nav style={styles.navWrapper}>
             <div style={styles.navTitleWrapper}>
                 <h1 style={styles.navTitle}>GreenBook API</h1>
             </div>
             <div style={styles.navItemsOuterWrapper}>
                 <div style={styles.navItemsInnerWrapper}>
                     <div >
+                        <div className='nav-small-wrapper' style={{backgroundColor: current === 'login' ? 'rgb(46, 45, 45)' : '#0e0d0d'}} >
+                            <h2 style={styles.navItemText} onClick={() => setCurr('login')}>Login</h2>
+                        </div>
+                    </div>
+                    <div >
+                        <div className='nav-small-wrapper' style={{backgroundColor: current === 'location' ? 'rgb(46, 45, 45)' : '#0e0d0d'}}>
+                            <h2 style={styles.navItemText} onClick={() => setCurr('location')}>Default Location</h2>
+                        </div>
+                    </div>
+                    <div >
                         <div style={styles.navItemWrapper}>
-                            <h2 style={styles.navItemText}>{`API is currently ${status}`}</h2>
+                            <h2 style={styles.navPingText}>{status === 'active' ? `API is currently ${status}` : 'API is currently inactive'}</h2>
                         </div>
                     </div>
                 </div>

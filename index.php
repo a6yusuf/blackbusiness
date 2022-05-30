@@ -34,6 +34,7 @@ class BlackBusiness {
 
     function load_scripts() {
         wp_enqueue_script( 'wp-react-kickoff', WPRK_URL . 'build/admin.js', [ 'wp-blocks', 'wp-element' ], wp_rand(), true );
+        wp_enqueue_style( 'wp-react-kickoff', WPRK_URL . 'build/index.css');
         wp_localize_script( 'wp-react-kickoff', 'appLocalizer', [
             'apiUrl' => home_url( '/wp-json' ),
             'nonce' => wp_create_nonce( 'wp_rest' ),

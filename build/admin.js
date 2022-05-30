@@ -2583,7 +2583,9 @@ __webpack_require__.r(__webpack_exports__);
 
 function NavBar(_ref) {
   let {
-    status = "active"
+    status = "active",
+    current,
+    setCurr
   } = _ref;
   const styles = {
     navWrapper: {
@@ -2627,11 +2629,17 @@ function NavBar(_ref) {
       padding: '0.5rem',
       fontWeight: 700,
       margin: 10,
+      color: 'white',
+      cursor: 'pointer'
+    },
+    navPingText: {
+      padding: '0.5rem',
+      fontWeight: 700,
+      margin: 10,
       color: status === 'active' ? 'green' : 'red'
     }
   };
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("nav", {
-    className: styles.navWrapper,
     style: styles.navWrapper
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     style: styles.navTitleWrapper
@@ -2642,10 +2650,26 @@ function NavBar(_ref) {
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     style: styles.navItemsInnerWrapper
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "nav-small-wrapper",
+    style: {
+      backgroundColor: current === 'login' ? 'rgb(46, 45, 45)' : '#0e0d0d'
+    }
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", {
+    style: styles.navItemText,
+    onClick: () => setCurr('login')
+  }, "Login"))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "nav-small-wrapper",
+    style: {
+      backgroundColor: current === 'location' ? 'rgb(46, 45, 45)' : '#0e0d0d'
+    }
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", {
+    style: styles.navItemText,
+    onClick: () => setCurr('location')
+  }, "Default Location"))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     style: styles.navItemWrapper
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", {
-    style: styles.navItemText
-  }, `API is currently ${status}`))))));
+    style: styles.navPingText
+  }, status === 'active' ? `API is currently ${status}` : 'API is currently inactive'))))));
 }
 
 /***/ }),
@@ -2743,12 +2767,22 @@ __webpack_require__.r(__webpack_exports__);
 
 const Settings = () => {
   const [data, setData] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({});
+  const [location, setLocation] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({});
   const [status, setStatus] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('');
+  const [current, setCurrent] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('login');
   const [loading, setLoading] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false);
   const url = `${appLocalizer.apiUrl}/wprk/v1`;
 
   const handleData = e => {
     setData(prev => {
+      return { ...prev,
+        [e.target.name]: e.target.value
+      };
+    });
+  };
+
+  const handleLocation = e => {
+    setLocation(prev => {
       return { ...prev,
         [e.target.name]: e.target.value
       };
@@ -2781,6 +2815,36 @@ const Settings = () => {
     }
   };
 
+  const submitLoc = e => {
+    e.preventDefault();
+    const {
+      long,
+      lat,
+      distance,
+      googleApiKey
+    } = location;
+
+    if (distance > 0) {
+      setLoading(true);
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(`${url}/location`, {
+        longitude: long,
+        latitude: lat,
+        distance: distance,
+        googleApiKey: googleApiKey
+      }, {
+        headers: {
+          'content-type': 'application/json',
+          'X-WP-NONCE': appLocalizer.nonce
+        }
+      }).then(res => {
+        console.log("Res: ", res.data);
+        setLoading(false);
+      }); // console.log("Dt: ", username, ' ', password)
+    } else {
+      alert("Enter positive distance");
+    }
+  };
+
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
     axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(`${url}/ping`).then(res => {
       console.log("Data: ", JSON.parse(res.data));
@@ -2788,8 +2852,16 @@ const Settings = () => {
     });
   }, []);
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_NavBar__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    status: status
-  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("form", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_TextInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    status: status,
+    current: current,
+    setCurr: setCurrent
+  }), current === 'login' && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("form", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", {
+    style: {
+      fontWeight: 700,
+      margin: 10,
+      fontSize: 25
+    }
+  }, "Login"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_TextInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
     label: "username",
     name: "username",
     type: "text",
@@ -2804,6 +2876,48 @@ const Settings = () => {
     bgColor: "black",
     tColor: "white",
     callback: handleSubmit
+  })), current === 'location' && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("form", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      margin: 10
+    }
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", {
+    style: {
+      fontWeight: 700,
+      margin: 5,
+      fontSize: 25
+    }
+  }, "Set Default Location"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("small", {
+    style: {
+      fontWeight: 500,
+      margin: 5
+    }
+  }, "Leave blank if you want to use your users' locations")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_TextInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    label: "longitude",
+    name: "long",
+    type: "text",
+    callback: handleLocation
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_TextInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    label: "latitude",
+    name: "lat",
+    type: "text",
+    callback: handleLocation
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_TextInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    label: "distance (mile square)",
+    name: "distance",
+    type: "number",
+    callback: handleLocation
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_TextInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    label: "google api key",
+    name: "googleApiKey",
+    type: "text",
+    callback: handleLocation
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    text: loading ? "Please wait..." : "Save",
+    bgColor: "black",
+    tColor: "white",
+    callback: submitLoc
   })));
 };
 
