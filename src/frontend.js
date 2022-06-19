@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import ReactDOM from "react-dom"
-import Axios from 'axios'
 import "./frontend.scss"
 import PluginLayout from './pages/PluginLayout';
 
@@ -14,14 +13,6 @@ divsToUpdate.forEach(div => {
 })
 
 function OurComponent(props) {
-  const [data, setData] = useState([])
-  const [loading, setLoading] = useState(false)
-
-  
-
-  const url = `${appLocalizer.apiUrl}/wprk/v1/settings`;
-
-  console.log("URL: ", url)
 
   return (
     <div className="boilerplate-frontend">

@@ -14,6 +14,11 @@ class WP_React_Settings_Rest_Route {
             'callback' => [ $this, 'get_settings' ],
             'permission_callback' => [ $this, 'get_settings_permission' ]
         ] );
+        register_rest_route( 'wprk/v1', '/user', [
+            'methods' => 'GET',
+            'callback' => [ $this, 'get_user' ],
+            'permission_callback' => [ $this, 'get_settings_permission' ]
+        ] );
         register_rest_route( 'wprk/v1', '/ping', [
             'methods' => 'GET',
             'callback' => [ $this, 'ping_api' ],
@@ -33,6 +38,21 @@ class WP_React_Settings_Rest_Route {
             'methods' => 'POST',
             'callback' => [ $this, 'save_location' ],
             'permission_callback' => [ $this, 'save_settings_permission' ]
+        ] );
+        register_rest_route( 'wprk/v1', '/user', [
+            'methods' => 'POST',
+            'callback' => [ $this, 'create_user' ],
+            'permission_callback' => [ $this, 'get_settings_permission' ]
+        ] );
+        register_rest_route( 'wprk/v1', '/business', [
+            'methods' => 'POST',
+            'callback' => [ $this, 'recommend_biz' ],
+            'permission_callback' => [ $this, 'get_settings_permission' ]
+        ] );
+        register_rest_route( 'wprk/v1', '/locbusiness', [
+            'methods' => 'POST',
+            'callback' => [ $this, 'loc_business' ],
+            'permission_callback' => [ $this, 'get_settings_permission' ]
         ] );
     }
 
@@ -63,7 +83,7 @@ class WP_React_Settings_Rest_Route {
         $body = array(
             'latitude' => $latitude,
             'longitude' => $longitude,
-            'distance'  => $distance
+            'distance'  => $distance,
         );
 
         $args = array(
@@ -72,7 +92,36 @@ class WP_React_Settings_Rest_Route {
                 'Authorization' => 'Bearer ' . $token
             )
         );
-        $url = 'https://v1.greenbookapi.com/v1/business/nearby';
+        // $url = 'https://v1.greenbookapi.com/v1/business/nearby';
+        $url = 'https://global-green-book-api-dev-kjjy8.ondigitalocean.app/v1/business/nearby';
+        $response = wp_remote_get( $url, $args );
+        $res  = wp_remote_retrieve_body( $response );
+
+        return rest_ensure_response( json_decode($res) );
+    }
+
+    public function loc_business($req) {
+        $longitude  = $req['lng'];
+        $latitude  = $req['lat'];
+        $googleApiKey = $req['apiKey'];
+        $distance  = get_option( 'greenbook_settings_distance' ) || 10;
+        $token = get_option( 'greenbook_settings_token');
+        $token_type = get_option( 'greenbook_settings_token_type');
+
+        $body = array(
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+            'distance'  => $distance,
+        );
+
+        $args = array(
+            'body'  => $body,
+            'headers' => array(
+                'Authorization' => 'Bearer ' . $token
+            )
+        );
+        // $url = 'https://v1.greenbookapi.com/v1/business/nearby';
+        $url = 'https://global-green-book-api-dev-kjjy8.ondigitalocean.app/v1/business/nearby';
         $response = wp_remote_get( $url, $args );
         $res  = wp_remote_retrieve_body( $response );
 
@@ -83,6 +132,86 @@ class WP_React_Settings_Rest_Route {
         return true;
     }
 
+    public function recommend_biz( $req ) {
+        $business_name = sanitize_text_field( $req['business_name'] );
+        $tags  = sanitize_text_field( $req['tags'] );
+        $email  = sanitize_text_field( $req['email'] );
+        $phone  = sanitize_text_field( $req['phone'] );
+        $country  = sanitize_text_field( $req['country'] );
+        $state  = sanitize_text_field( $req['state'] );
+        $zip_code  = sanitize_text_field( $req['zip_code'] );
+        $city  = sanitize_text_field( $req['city'] );
+        $street_address  = sanitize_text_field( $req['street_address'] );
+
+        $token = get_option( 'greenbook_settings_token');
+
+        $body = array(
+            'business_name' => $business_name,
+            'email' => $email,
+            'phone' => $phone,
+            'country' => $country,
+            'tags' => explode(',',$tags),
+            'state' => $state,
+            'zip_code' => $zip_code,
+            'street_address' => $street_address,
+        );
+
+        return $body;
+
+        $args = array(
+            'body'  => $body,
+            'headers' => array(
+                'Authorization' => 'Bearer ' . $token
+            )
+        );
+        $url = 'https://global-green-book-api-dev-kjjy8.ondigitalocean.app/v1/business/recommend';
+        $response = wp_remote_post( $url, $args );
+        $res  = wp_remote_retrieve_body( $response );
+
+        $data = json_decode($res, true);
+        // return $data;
+        return rest_ensure_response( $data );
+
+    }
+    public function create_user( $req ) {
+        $username = sanitize_text_field( $req['username'] );
+        $password  = sanitize_text_field( $req['password'] );
+        $email  = sanitize_text_field( $req['email'] );
+        $first_name  = sanitize_text_field( $req['first_name'] );
+        $last_name  = sanitize_text_field( $req['last_name'] );
+        $mobile_phone  = sanitize_text_field( $req['mobile_phone'] );
+        $country  = sanitize_text_field( $req['country'] );
+        $state  = sanitize_text_field( $req['state'] );
+        $zip_code  = sanitize_text_field( $req['zip_code'] );
+        $city  = sanitize_text_field( $req['city'] );
+        $street_address  = sanitize_text_field( $req['street_address'] );
+
+        $body = array(
+            'username' => $username,
+            'password' => $password,
+            'email' => $email,
+            'password' => $password,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'country' => $country,
+            'mobile_phone' => $mobile_phone,
+            'state' => $state,
+            'zip_code' => $zip_code,
+            'street_address' => $street_address,
+        );
+
+        $args = array(
+            'body'  => json_encode($body),
+        );
+        $url = 'https://global-green-book-api-dev-kjjy8.ondigitalocean.app/v1/oauth/token';
+        $response = wp_remote_post( $url, $args );
+        $res  = wp_remote_retrieve_body( $response );
+
+        $data = json_decode($res, true);
+        // return $data;
+        return rest_ensure_response( $data );
+
+    }
     public function save_settings( $req ) {
         $username = sanitize_text_field( $req['username'] );
         $password  = sanitize_text_field( $req['password'] );
@@ -95,13 +224,14 @@ class WP_React_Settings_Rest_Route {
         $args = array(
             'body'  => $body,
         );
-        $url = 'https://v1.greenbookapi.com/v1/oauth/token';
+        $url = 'https://global-green-book-api-dev-kjjy8.ondigitalocean.app/v1/user/create';
+        // $url = 'https://v1.greenbookapi.com/v1/oauth/token';
         $response = wp_remote_post( $url, $args );
         $res  = wp_remote_retrieve_body( $response );
 
-        $data = json_decode($res);
+        $data = json_decode($res, true);
         // return $data;
-        if(!array_key_exists('detail', $data)){
+        if($data['access_token']){
             $token = $data['access_token'];
             $token_type = $data['token_type'];
     
@@ -109,8 +239,9 @@ class WP_React_Settings_Rest_Route {
             update_option( 'greenbook_settings_password', $password );
             update_option( 'greenbook_settings_token', $token );
             update_option( 'greenbook_settings_token_type', $token_type );
+            return rest_ensure_response( $data );
         }
-        return rest_ensure_response( $data );
+        return rest_ensure_response( 'failed' );
 
     }
 
@@ -129,10 +260,17 @@ class WP_React_Settings_Rest_Route {
     }
 
     public function ping_api() {
+        $url = 'https://global-green-book-api-dev-kjjy8.ondigitalocean.app/ping';
         $url = 'https://v1.greenbookapi.com/ping';
         $response = wp_remote_get($url);
         $body     = wp_remote_retrieve_body( $response );
         return rest_ensure_response($body);
+    }
+
+    public function get_user() {
+        $current_user = get_current_user_id();
+        // $user = $current_user;
+        return rest_ensure_response($current_user);
     }
 
     public function save_settings_permission() {

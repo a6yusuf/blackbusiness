@@ -3,6 +3,8 @@ import axios from 'axios';
 import NavBar from '../components/NavBar';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
+import Alert from '../components/Alert';
+import apiKey from '../components/googleApiKey';
 
 const Settings = () => {
 
@@ -11,6 +13,10 @@ const Settings = () => {
     const [status, setStatus ] = useState('');
     const [current, setCurrent ] = useState('login');
     const [loading, setLoading] = useState(false);
+    const [loginAlert, setLoginAlert] = useState(false);
+    const [loginError, setLoginError] = useState(false);
+    const [locationAlert, setLocationAlert] = useState(false);
+    const [locationError, setLocationError] = useState(false);
 
     const url = `${appLocalizer.apiUrl}/wprk/v1`;
 
@@ -39,25 +45,27 @@ const Settings = () => {
                 }
             } )
             .then( ( res ) => {
-                console.log("Res: ", res.data)
+                // console.log("Res: ", res.data)
                 setLoading(false);
+                setLoginAlert(true)
+                // reset()
             } )
-            // console.log("Dt: ", username, ' ', password)
         }else{
-            alert("Please, enter valid credentials!")
+            setLoginError(true)
+            // reset()
         }
     }
 
     const submitLoc = (e) => {
         e.preventDefault();
-        const {long, lat, distance, googleApiKey} = location
+        const {long, lat, distance} = location
         if(distance > 0) { 
             setLoading(true);
             axios.post( `${url}/location`, {
                 longitude: long,
                 latitude: lat,
                 distance: distance,
-                googleApiKey: googleApiKey
+                googleApiKey: apiKey
             }, {
                 headers: {
                     'content-type': 'application/json',
@@ -65,12 +73,14 @@ const Settings = () => {
                 }
             } )
             .then( ( res ) => {
-                console.log("Res: ", res.data)
+                // console.log("Res: ", res.data)
                 setLoading(false);
+                setLocationAlert(true)
+                // reset()
             } )
-        // console.log("Dt: ", username, ' ', password)
         }else {
-            alert("Enter positive distance")
+            setLocationError(true)
+            // reset()
         }
     }
 
@@ -82,9 +92,20 @@ const Settings = () => {
         } )
     }, [] )
 
+    const reset = () => {
+        setTimeout(() => {
+            loginError ? setLocationError(false) : null
+            locationError ? setLoginError(false) : null
+        }, 3000);
+    }
+
     return(
         <>
             <NavBar status={status} current={current} setCurr={setCurrent}/>
+            <Alert msg="Login successfully." type="success" show={loginAlert} />
+            <Alert msg="Please, enter valid credentials!" type="Error" show={loginError} />
+            <Alert msg="Location saved successfully." type="Success" show={locationAlert} />
+            <Alert msg="Enter positive distance" type="Error" show={locationError} />
             {current === 'login' && <form>
                 <h2 style={{fontWeight: 700, margin: 10, fontSize: 25}}>Login</h2>
                 <TextInput label="username" name="username" type="text" callback={handleData}/>
@@ -94,12 +115,12 @@ const Settings = () => {
             {current === 'location' && <form>
                 <div style={{display: 'flex', flexDirection: 'column', margin: 10}}>
                     <h2 style={{fontWeight: 700, margin: 5, fontSize: 25}}>Set Default Location</h2>
-                    <small style={{fontWeight: 500, margin: 5}}>Leave blank if you want to use your users' locations</small>
+                    {/* <small style={{fontWeight: 500, margin: 5}}>Leave blank if you want to use your users' locations</small> */}
                 </div>
                 <TextInput label="longitude" name="long" type="text" callback={handleLocation}/>
                 <TextInput label="latitude" name="lat" type="text" callback={handleLocation}/>
                 <TextInput label="distance (mile square)" name="distance" type="number" callback={handleLocation}/>
-                <TextInput label="google api key" name="googleApiKey" type="text" callback={handleLocation}/>
+                {/* <TextInput label="google api key" name="googleApiKey" type="text" callback={handleLocation}/> */}
                 <Button text={loading ? "Please wait..." : "Save"} bgColor='black' tColor='white' callback={submitLoc}/>
             </form>}
         </>

@@ -1,34 +1,45 @@
 import React from 'react'
 import {GoogleApiWrapper, Map, Marker} from 'google-maps-react'
 import useWindowDimensions from './useWindowDimensions';
+import apiKey from './googleApiKey';
+import '../frontend.scss'
 
-const BusinessMap = ({location}) => {
+
+const BusinessMap = ({locations}) => {
 
     const { width } = useWindowDimensions();
+    const [center, setCenter] = React.useState({})
 
     React.useEffect(() => {
-      console.log("New width: ", width)
-    }, [width])
+        // set average of locations as the center
+        let arr = Object.keys(locations);
+        let getLat = (key) => locations[key]["lat"];
+        let avgLat = arr.reduce((a, c) => a + Number(getLat(c)), 0) / arr.length;
+    
+        let getLng = (key) => locations[key]["lng"];
+        let avgLng = arr.reduce((a, c) => a + Number(getLng(c)), 0) / arr.length;
+    
+        setCenter({ lat: avgLat, lng: avgLng });
+    }, [locations, width])
     
 
   return (
-    <div>
+    <div className='google-map'>
         {(
         <Map
           google={window.google}
           containerStyle={{
-            width: width > 558 ? "46vw" : "90vw",
-            // height: "calc(100vh - 135px)",
-            height: "70vh",
+            width: "100%",
+            height: "100%",
           }} 
-          center={{
-            lat: 40.854885,
-            lng: -88.081807
-          }}
-          zoom={13}
+          center={center}
+          initialCenter={locations[0]}
+          zoom={15}
           disableDefaultUI={true}
         >
-            <Marker position={{lat: 37.778519, lng: -122.405640}} onClick={() => setHighLight(i)} />
+            {locations.map((coords, i) => (
+            <Marker position={coords} onClick={() => setHighLight(i)} />
+          ))}
         </Map>
       )}
     </div>
@@ -36,5 +47,5 @@ const BusinessMap = ({location}) => {
 }
 
 export default GoogleApiWrapper({
-    apiKey: 'AIzaSyAyesbQMyKVVbBgKVi2g6VX7mop2z96jBo'
+    apiKey: apiKey
   })(BusinessMap)

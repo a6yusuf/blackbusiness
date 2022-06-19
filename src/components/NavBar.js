@@ -1,5 +1,5 @@
 import React from 'react'
-
+import '../frontend.scss'
 
 export default function NavBar({status="active", current, setCurr}) {
 
@@ -73,11 +73,11 @@ export default function NavBar({status="active", current, setCurr}) {
                             <h2 style={styles.navItemText} onClick={() => setCurr('location')}>Default Location</h2>
                         </div>
                     </div>
-                    <div >
+                    {/* <div >
                         <div style={styles.navItemWrapper}>
                             <h2 style={styles.navPingText}>{status === 'active' ? `API is currently ${status}` : 'API is currently inactive'}</h2>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </nav>
