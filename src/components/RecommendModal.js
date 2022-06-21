@@ -13,6 +13,7 @@ export default function RecommendModal({close, login, recoAlert}) {
 
     const submit = e => {
         e.preventDefault()
+        // console.log("data: ", data)
         const {business_name, country, city, street_address, zip_code, tags} = data
         if (business_name && country && city && street_address && zip_code && tags) {
             setLoad(true)
@@ -20,14 +21,17 @@ export default function RecommendModal({close, login, recoAlert}) {
             Axios.post(`${url}/business`, payload)
                 .then(res => {
                     console.log("Res: ", res.data)
-                    recoAlert(true)
-                    setLoad(false)
-                    close()
+                    if(res.data.status === 201){
+                        recoAlert(true)
+                        setLoad(false)
+                        close()
+                    }else{
+                        alert("Error recommending business")
+                    }
                 })
         }else {
             alert("Required field(s) missing")
         }
-        // console.log("Data: ", data)
     }
 
     const handleData = e => {
@@ -35,6 +39,13 @@ export default function RecommendModal({close, login, recoAlert}) {
             return {...prev, [e.target.name]: e.target.value}
         })
     }
+
+    const capitalizeFirstLetter = string => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
+    const cat = ['accommodation', 'beauty', 'travel', 'education', 'food', 'legal', 'finance', 'health']
+    
     
   return (
     <Modal title="Recommend Business" close={close}>
@@ -63,18 +74,22 @@ export default function RecommendModal({close, login, recoAlert}) {
                         className="gb-block gb-uppercase gb-text-gray-800 gb-text-xs gb-font-bold gb-mb-2"
                         htmlFor="grid-password"
                     >
-                        Tags
+                        Categories
                         <span className='gb-text-red-600 gb-font-2xl'>*</span>
                     </label>
-                    <input
+                    {/* <input
                         type="text"
                         className="gb-px-3 gb-py-3 gb-placeholder-gray-400 gb-text-gray-700 gb-bg-white gb-rounded gb-text-sm gb-shadow gb-focus:outline-none gb-focus:shadow-outline gb-w-full"
                         name="tags"
                         id="tags"
                         style={{ transition: "all .15s ease" }}
                         onChange={handleData}
-                    />
-                    <small className='gb-text-red-600 gb-font-sm'>Please, use comma (,) to separate multiple tags</small>
+                    /> */}
+                    <select name="tags" onChange={handleData} className="gb-mb-2 gb-px-3 gb-py-3 gb-placeholder-gray-400 gb-text-gray-700 gb-rounded gb-text-sm gb-shadow gb-border gb-border-black gb-focus:border-purple-700 gb-focus:outline-none gb-focus:shadow-outline gb-w-full">
+                        {cat.map(item => <option key={item} value={`cat_${item}`}>{capitalizeFirstLetter(item)}</option>)}
+                        {/* <option key="ns" value="nextStep">Proceed to next step</option>
+                        <option key="nv" value="newVid">Proceed to new video</option> */}
+                    </select>
                 </div>
                 <div className="gb-relative gb-flex gb-justify-between gb-w-full gb-mb-3">
                     <span>

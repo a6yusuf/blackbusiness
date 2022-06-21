@@ -9757,9 +9757,12 @@ const Settings = () => {
           'X-WP-NONCE': appLocalizer.nonce
         }
       }).then(res => {
-        // console.log("Res: ", res.data)
+        console.log("Res: ", res.data);
         setLoading(false);
         setLoginAlert(true); // reset()
+      }).catch(err => {
+        setLoginError(true);
+        console.log(err);
       });
     } else {
       setLoginError(true); // reset()
@@ -9798,7 +9801,7 @@ const Settings = () => {
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
     axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(`${url}/ping`).then(res => {
-      console.log("Data: ", JSON.parse(res.data));
+      // console.log("Data: ", JSON.parse(res.data))
       setStatus(JSON.parse(res.data).status);
     });
   }, []);

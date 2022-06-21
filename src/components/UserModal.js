@@ -13,16 +13,19 @@ export default function UserModal({close, reco, login}) {
 
     const submit = e => {
         e.preventDefault()
-        const {username, password, email, country, first_name, last_name, mobile_phone, city, street_address} = data
-        if (username && password && email && country && first_name && last_name && mobile_phone && city && street_address) {
+        const {password, email, country, first_name, last_name, mobile_phone, city, street_address} = data
+        if (password && email && country && first_name && last_name && mobile_phone && city && street_address) {
             setLoad(true)
-            // console.log("Data: ", data)
             Axios.post(`${url}/user`, data)
                 .then(res => {
-                    console.log("Res: ", res.data)
-                    reco()
-                    login({email, password})
-                    setLoad(false)
+                    // console.log("Res: ", res.data)
+                    if(res.data.status === 201){
+                        reco()
+                        login({email, password})
+                        setLoad(false)
+                    }else{
+                        alert("Error creating account")
+                    }
                 })
         }else {
             alert("Required field(s) missing")
@@ -76,7 +79,7 @@ export default function UserModal({close, reco, login}) {
                     />
                     </span>
                 </div>
-                <div className="gb-relative gb-flex gb-justify-between gb-w-full gb-mb-3">
+                <div className="gb-relative gb-w-full gb-mb-3">
                 <span>
                     <label
                         className="gb-block gb-uppercase gb-text-gray-800 gb-text-xs gb-font-bold gb-mb-2"
@@ -95,7 +98,7 @@ export default function UserModal({close, reco, login}) {
                     />
                     </span>
                     <span>
-                    <label
+                    {/* <label
                         className="gb-block gb-uppercase gb-text-gray-800 gb-text-xs gb-font-bold gb-mb-2"
                         htmlFor="grid-password"
                     >
@@ -109,7 +112,7 @@ export default function UserModal({close, reco, login}) {
                         id="username"
                         style={{ transition: "all .15s ease" }}
                         onChange={handleData}
-                    />
+                    /> */}
                     </span>
                 </div>
                 <div className="gb-relative gb-flex gb-justify-between gb-w-full gb-mb-3">

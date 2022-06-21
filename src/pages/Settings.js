@@ -45,11 +45,15 @@ const Settings = () => {
                 }
             } )
             .then( ( res ) => {
-                // console.log("Res: ", res.data)
+                console.log("Res: ", res.data)
                 setLoading(false);
                 setLoginAlert(true)
                 // reset()
             } )
+            .catch(err => {
+                setLoginError(true)
+                console.log(err)
+            })
         }else{
             setLoginError(true)
             // reset()
@@ -87,7 +91,7 @@ const Settings = () => {
     useEffect( () => {
         axios.get(`${url}/ping`)
         .then( ( res ) => {
-            console.log("Data: ", JSON.parse(res.data))
+            // console.log("Data: ", JSON.parse(res.data))
             setStatus(JSON.parse(res.data).status)
         } )
     }, [] )
