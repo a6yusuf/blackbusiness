@@ -25,6 +25,7 @@ export default function UserModal({close, reco, login}) {
                         setLoad(false)
                     }else{
                         alert("Error creating account")
+                        // console.log(res.data)
                     }
                 })
         }else {
@@ -98,21 +99,6 @@ export default function UserModal({close, reco, login}) {
                     />
                     </span>
                     <span>
-                    {/* <label
-                        className="gb-block gb-uppercase gb-text-gray-800 gb-text-xs gb-font-bold gb-mb-2"
-                        htmlFor="grid-password"
-                    >
-                        Username
-                        <span className='gb-text-red-600 gb-font-2xl'>*</span>
-                    </label>
-                    <input
-                        type="text"
-                        className="gb-px-3 gb-py-3 gb-placeholder-gray-400 gb-text-gray-700 gb-bg-white gb-rounded gb-text-sm gb-shadow gb-focus:outline-none gb-focus:shadow-outline gb-w-full"
-                        name="username"
-                        id="username"
-                        style={{ transition: "all .15s ease" }}
-                        onChange={handleData}
-                    /> */}
                     </span>
                 </div>
                 <div className="gb-relative gb-flex gb-justify-between gb-w-full gb-mb-3">
@@ -232,6 +218,22 @@ export default function UserModal({close, reco, login}) {
                         {countries?.map((item, index) => <option key={index} value={item.code}>{item.name}</option>)}
                     </select>
                     </span>
+                </div>
+                <div className="gb-relative gb-w-full gb-mb-3">
+                    <div className="gb-flex">
+                    <label className="gb-flex gb-items-center">
+                        <input name="mobileOptin" type="checkbox" className="form-checkbox gb-mr-1" defaultChecked onChange={handleData}/>
+                        <span className="gb-ml-2">Receive notification through SMS</span>
+                    </label>
+                    </div>
+                </div>
+                <div className="gb-relative gb-w-full gb-mb-3">
+                    <div className="gb-flex">
+                    <label className="gb-flex gb-items-center">
+                        <input name='emailOptin' type="checkbox" className="form-checkbox gb-mr-1" defaultChecked onChange={handleData} />
+                        <span className="gb-ml-2">Receive notification through Email</span>
+                    </label>
+                    </div>
                 </div>
                 <div className="gb-text-center gb-mt-6">
                 <button

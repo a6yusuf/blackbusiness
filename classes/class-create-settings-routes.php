@@ -144,11 +144,10 @@ class WP_React_Settings_Rest_Route {
         $userEmail  = sanitize_text_field( $req['userEmail'] );
         $userPsw  = sanitize_text_field( $req['userPsw'] );
 
-        // $token = get_option( 'greenbook_settings_token');
 
         $body = array(
-            'username' => $userEmail,
-            'password' => $userPsw
+            'username' => "admin",
+            'password' => "2142"
         );
 
         $args = array(
@@ -162,38 +161,62 @@ class WP_React_Settings_Rest_Route {
 
         if($data['access_token']){
 
-            $token = $data['access_token'];
+            $token1 = $data['access_token'];
 
-            $body = json_encode(array(
-                'business_name' => $business_name,
-                'email' => $email,
-                'phone' => $phone,
-                'country' => $country,
-                'tags' => array($tags),
-                'state' => $state,
-                'zip_code' => $zip_code,
-                'city'      => $city,
-                'street_address' => $street_address,
+            $body2 = json_encode(array(
+                'email' => "mosuro.zaid@gmail.com",
+                'password' => "Hello$1234_Bye"
             ));
 
-            $args = array(
-                'body'  => $body,
+            $args2 = array(
+                'body'  => $body2,
                 'headers' => array(
-                    'Authorization' => 'Bearer ' . $token,
+                    'Authorization' => 'Bearer ' . $token1,
                     'Content-Type' => 'application/json'
                 )
             );
-            $url = 'https://global-green-book-api-dev-kjjy8.ondigitalocean.app/v1/business/recommend';
-            $response = wp_remote_post( $url, $args );
-            $res  = wp_remote_retrieve_body( $response );
-            $res_code  = wp_remote_retrieve_response_code( $response );
 
-            $data = json_decode($res, true);
-            return ['data' => $data, 'status' => $res_code, 'token' => $token];
+            $url2 = 'https://global-green-book-api-dev-kjjy8.ondigitalocean.app/v1/auth/email';
+            $response = wp_remote_post( $url2, $args2 );
+            $res  = wp_remote_retrieve_body( $response );
+
+            $data2 = json_decode($res, true);
+
+            if($data2['access_token']){
+                $token2 = $data2['access_token'];
+
+                $body = json_encode(array(
+                    'business_name' => $business_name,
+                    "recommender_email" => $userEmail,
+                    'email' => $email,
+                    'phone' => $phone,
+                    'country' => $country,
+                    'tags' => array($tags),
+                    'state' => $state,
+                    'zip_code' => $zip_code,
+                    'city'      => $city,
+                    'street_address' => $street_address
+                ));
+    
+                $args = array(
+                    'body'  => $body,
+                    'headers' => array(
+                        'Authorization' => 'Bearer ' . $token2,
+                        'Content-Type' => 'application/json'
+                    )
+                );
+                $url = 'https://global-green-book-api-dev-kjjy8.ondigitalocean.app/v1/business/recommend';
+                $response = wp_remote_post( $url, $args );
+                $res  = wp_remote_retrieve_body( $response );
+                $res_code  = wp_remote_retrieve_response_code( $response );
+    
+                $dataa = json_decode($res, true);
+                return ['data' => $dataa, 'status' => $res_code];
+            }
+
         }
     }
     public function create_user( $req ) {
-        // $username = sanitize_text_field( $req['username'] );
         $password  = sanitize_text_field( $req['password'] );
         $email  = sanitize_text_field( $req['email'] );
         $first_name  = sanitize_text_field( $req['first_name'] );
@@ -204,6 +227,8 @@ class WP_React_Settings_Rest_Route {
         $zip_code  = sanitize_text_field( $req['zip_code'] );
         $city  = sanitize_text_field( $req['city'] );
         $street_address  = sanitize_text_field( $req['street_address'] );
+        $mobileOptin  = sanitize_text_field( $req['mobileOptin'] );
+        $emailOptin  = sanitize_text_field( $req['emailOptin'] );
 
         $body = json_encode(array(
             'username' => $email,
@@ -218,8 +243,8 @@ class WP_React_Settings_Rest_Route {
             'zip_code' => $zip_code,
             'city'      => $city,
             'street_address' => $street_address,
-            "mobile_opt_in" => true,
-            "email_opt_in" => true
+            "mobile_opt_in" => $mobileOptin ? $mobileOptin : true,
+            "email_opt_in"  => $emailOptin ? $emailOptin : true
         ));
 
         $args = array(
