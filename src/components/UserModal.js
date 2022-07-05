@@ -3,6 +3,7 @@ import Modal from './Modal';
 import countries from './countries';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Axios from 'axios';
+import PhoneNumInput from './PhoneNumInput';
 
 export default function UserModal({close, reco, login}) {
 
@@ -36,6 +37,12 @@ export default function UserModal({close, reco, login}) {
     const handleData = e => {
         setData(prev => {
             return {...prev, [e.target.name]: e.target.value}
+        })
+    }
+
+    const handlePhone = arg => {
+        setData(prev => {
+            return {...prev, mobile_phone: arg}
         })
     }
     
@@ -127,14 +134,7 @@ export default function UserModal({close, reco, login}) {
                         Mobile Phone
                         <span className='gb-text-red-600 gb-font-2xl'>*</span>
                     </label>
-                    <input
-                        type="text"
-                        className="gb-px-3 gb-py-3 gb-placeholder-gray-400 gb-text-gray-700 gb-bg-white gb-rounded gb-text-sm gb-shadow gb-focus:outline-none gb-focus:shadow-outline gb-w-full"
-                        name="mobile_phone"
-                        id="mobile_phone"
-                        style={{ transition: "all .15s ease" }}
-                        onChange={handleData}
-                    />
+                    <PhoneNumInput handleData={handlePhone}/>
                     </span>
                 </div>
                 <div className="gb-relative gb-w-full gb-mb-3">

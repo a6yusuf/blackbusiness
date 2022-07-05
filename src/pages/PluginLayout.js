@@ -123,6 +123,7 @@ export default function PluginLayout() {
       });
     });
     // console.log(arr)
+    // setReadyData([])
     setReadyData(arr)
   }
 

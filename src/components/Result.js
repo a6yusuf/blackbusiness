@@ -16,9 +16,9 @@ export default function Result({data, loading, filters, removeFilter, clearFilte
 
     const { width } = useWindowDimensions();
 
-    React.useEffect(() => {
-        console.log("Big Screen Width: ", width)
-    }, [width])
+    // React.useEffect(() => {
+    //     console.log(width)
+    // }, [width])
 
     const style = {
         card: {
@@ -48,8 +48,8 @@ export default function Result({data, loading, filters, removeFilter, clearFilte
       };
 
     const getFour = (arg, currentPage) => {
-        const four = arg?.slice(4 * (currentPage - 1), 4 * currentPage);
-        return four
+        return arg?.slice(4 * (currentPage - 1), 4 * currentPage);
+        // return four
     }
 
     const next = () => {
@@ -69,20 +69,30 @@ export default function Result({data, loading, filters, removeFilter, clearFilte
     React.useEffect(() => {
         let nd = getFour(data, page)
         setCon(nd)
-        // setOnMap({lat: nd[0]?.primary_address.lat, lng: nd[0]?.primary_address.lng})
         let cords = [];
         nd.forEach((e) => {
           cords.push({ lat: e.primary_address.lat, lng: e.primary_address.lng });
         });
         setCoOrdinates(cords)
     }, [page])
+
+    React.useEffect(() => {
+        let nd = getFour(data, 1)
+        setPage(1)
+        setCon(nd)
+        let cords = [];
+        nd.forEach((e) => {
+          cords.push({ lat: e.primary_address.lat, lng: e.primary_address.lng });
+        });
+        setCoOrdinates(cords)
+    }, [data])
     
 
     const showOnMap = id => {
         const dt = con.filter(item => item.id === id)[0]
         setOnMap({lat: dt?.primary_address.lat, lng: dt?.primary_address.lng})
         setBiz(dt)
-        console.log("Loc: ", dt)
+        // console.log("Loc: ", dt)
     }
 
     const capitalizeFirstLetter = string => {

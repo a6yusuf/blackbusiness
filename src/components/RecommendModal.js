@@ -3,10 +3,11 @@ import Modal from './Modal';
 import countries from './countries';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Axios from 'axios';
+import PhoneNumInput from './PhoneNumInput';
 
 export default function RecommendModal({close, login, recoAlert}) {
 
-    const [data, setData] = React.useState({})
+    const [data, setData] = React.useState({tags: 'cat_accommodation'})
     const [load, setLoad] = React.useState(false)
 
     const url = `${appLocalizer.apiUrl}/wprk/v1`;
@@ -37,6 +38,12 @@ export default function RecommendModal({close, login, recoAlert}) {
     const handleData = e => {
         setData(prev => {
             return {...prev, [e.target.name]: e.target.value}
+        })
+    }
+
+    const handlePhone = arg => {
+        setData(prev => {
+            return {...prev, phone: arg}
         })
     }
 
@@ -77,18 +84,8 @@ export default function RecommendModal({close, login, recoAlert}) {
                         Categories
                         <span className='gb-text-red-600 gb-font-2xl'>*</span>
                     </label>
-                    {/* <input
-                        type="text"
-                        className="gb-px-3 gb-py-3 gb-placeholder-gray-400 gb-text-gray-700 gb-bg-white gb-rounded gb-text-sm gb-shadow gb-focus:outline-none gb-focus:shadow-outline gb-w-full"
-                        name="tags"
-                        id="tags"
-                        style={{ transition: "all .15s ease" }}
-                        onChange={handleData}
-                    /> */}
                     <select name="tags" onChange={handleData} className="gb-mb-2 gb-px-3 gb-py-3 gb-placeholder-gray-400 gb-text-gray-700 gb-rounded gb-text-sm gb-shadow gb-border gb-border-black gb-focus:border-purple-700 gb-focus:outline-none gb-focus:shadow-outline gb-w-full">
                         {cat.map(item => <option key={item} value={`cat_${item}`}>{capitalizeFirstLetter(item)}</option>)}
-                        {/* <option key="ns" value="nextStep">Proceed to next step</option>
-                        <option key="nv" value="newVid">Proceed to new video</option> */}
                     </select>
                 </div>
                 <div className="gb-relative gb-flex gb-justify-between gb-w-full gb-mb-3">
@@ -99,14 +96,15 @@ export default function RecommendModal({close, login, recoAlert}) {
                     >
                         Phone
                     </label>
-                    <input
+                    {/* <input
                         type="text"
                         className="gb-px-3 gb-py-3 gb-placeholder-gray-400 gb-text-gray-700 gb-bg-white gb-rounded gb-text-sm gb-shadow gb-focus:outline-none gb-focus:shadow-outline gb-w-full"
                         name="phone"
                         id="phone"
                         style={{ transition: "all .15s ease" }}
                         onChange={handleData}
-                    />
+                    /> */}
+                    <PhoneNumInput handleData={handlePhone} />
                     </span>
                     <span>
                     <label

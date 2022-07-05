@@ -18,7 +18,7 @@ const BusinessMap = ({locations}) => {
     
         let getLng = (key) => locations[key]["lng"];
         let avgLng = arr.reduce((a, c) => a + Number(getLng(c)), 0) / arr.length;
-    
+        // console.log("center: ", { lat: avgLat, lng: avgLng }, "Locations: ", locations)
         setCenter({ lat: avgLat, lng: avgLng });
     }, [locations, width])
     
