@@ -88,24 +88,7 @@ export default function RecommendModal({close, login, recoAlert}) {
                         {cat.map(item => <option key={item} value={`cat_${item}`}>{capitalizeFirstLetter(item)}</option>)}
                     </select>
                 </div>
-                <div className="gb-relative gb-flex gb-justify-between gb-w-full gb-mb-3">
-                    <span>
-                    <label
-                        className="gb-block gb-uppercase gb-text-gray-800 gb-text-xs gb-font-bold gb-mb-2"
-                        htmlFor="grid-password"
-                    >
-                        Phone
-                    </label>
-                    {/* <input
-                        type="text"
-                        className="gb-px-3 gb-py-3 gb-placeholder-gray-400 gb-text-gray-700 gb-bg-white gb-rounded gb-text-sm gb-shadow gb-focus:outline-none gb-focus:shadow-outline gb-w-full"
-                        name="phone"
-                        id="phone"
-                        style={{ transition: "all .15s ease" }}
-                        onChange={handleData}
-                    /> */}
-                    <PhoneNumInput handleData={handlePhone} />
-                    </span>
+                <div className="gb-relative gb-w-full gb-mb-3">
                     <span>
                     <label
                         className="gb-block gb-uppercase gb-text-gray-800 gb-text-xs gb-font-bold gb-mb-2"
@@ -121,6 +104,17 @@ export default function RecommendModal({close, login, recoAlert}) {
                         style={{ transition: "all .15s ease" }}
                         onChange={handleData}
                     />
+                    </span>
+                </div>
+                <div className="gb-relative gb-w-full gb-mb-3">
+                <span>
+                    <label
+                        className="gb-block gb-uppercase gb-text-gray-800 gb-text-xs gb-font-bold gb-mb-2"
+                        htmlFor="grid-password"
+                    >
+                        Phone
+                    </label>
+                    <PhoneNumInput handleData={handlePhone} />
                     </span>
                 </div>
                 <div className="gb-relative gb-w-full gb-mb-3">

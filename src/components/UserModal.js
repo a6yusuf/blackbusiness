@@ -87,7 +87,7 @@ export default function UserModal({close, reco, login}) {
                     />
                     </span>
                 </div>
-                <div className="gb-relative gb-w-full gb-mb-3">
+                <div className="gb-relative gb-flex gb-justify-between gb-w-full gb-mb-3">
                 <span>
                     <label
                         className="gb-block gb-uppercase gb-text-gray-800 gb-text-xs gb-font-bold gb-mb-2"
@@ -106,10 +106,6 @@ export default function UserModal({close, reco, login}) {
                     />
                     </span>
                     <span>
-                    </span>
-                </div>
-                <div className="gb-relative gb-flex gb-justify-between gb-w-full gb-mb-3">
-                    <span>
                     <label
                         className="gb-block gb-uppercase gb-text-gray-800 gb-text-xs gb-font-bold gb-mb-2"
                         htmlFor="grid-password"
@@ -126,7 +122,9 @@ export default function UserModal({close, reco, login}) {
                         onChange={handleData}
                     />
                     </span>
-                    <span>
+                </div>
+                <div className="gb-relative gb-w-full gb-mb-3">
+                <span>
                     <label
                         className="gb-block gb-uppercase gb-text-gray-800 gb-text-xs gb-font-bold gb-mb-2"
                         htmlFor="grid-password"

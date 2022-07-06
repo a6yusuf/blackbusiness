@@ -41,14 +41,13 @@ export default function PluginLayout() {
             const business = res[0].data
             const currUser = res[1].data;
 
-        //  .then(res => {
-          //  console.log("UserData: ", res[1].data)
           let cat = sortCategories(getCategories(business))
           setCategories(cat)
           setReadyData(business)
           setData(business)
           setUser(currUser)
           setLoading(false)
+          // business.map(item => console.log("Locat: ", item.primary_address.lat, ': ', item.primary_address.lng))
           // console.log("categories: ", cat)
          }))
     }, [])
