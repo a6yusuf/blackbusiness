@@ -71,7 +71,7 @@ export default function Result({data, loading, filters, removeFilter, clearFilte
         setCon(nd)
         let cords = [];
         nd.forEach((e) => {
-          cords.push({ lat: e.primary_address.lat, lng: e.primary_address.lng });
+          cords.push({ lat: Number(e.primary_address.lat), lng: Number(e.primary_address.lng)  });
         });
         setCoOrdinates(cords)
     }, [page])
@@ -82,7 +82,7 @@ export default function Result({data, loading, filters, removeFilter, clearFilte
         setCon(nd)
         let cords = [];
         nd.forEach((e) => {
-          cords.push({ lat: e.primary_address.lat, lng: e.primary_address.lng });
+          cords.push({ lat: Number(e.primary_address.lat), lng: Number(e.primary_address.lng)  });
         });
         setCoOrdinates(cords)
     }, [data])
@@ -137,7 +137,7 @@ export default function Result({data, loading, filters, removeFilter, clearFilte
                 </div>
             </div>
             <div className='map-wrapper'>
-                <BusinessMap locations={coOrdinates} />
+                <BusinessMap locations={coOrdinates} data={con}/>
             </div>
         </div>
     </div>
